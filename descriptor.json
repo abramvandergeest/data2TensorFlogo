@@ -1,0 +1,20 @@
+{
+  "name": "flogo-data2tensor",
+  "type": "flogo:activity",
+  "version": "0.0.2",
+  "title": "Data2Tensor",
+  "description": "convert data into a tensorflow tensor",
+  "homepage": "https://github.com/abramvandergeest/contrib/tree/master/activity/mapper",
+  "settings":[
+    {
+      "name": "mappings",
+      "type": "object",
+      "required": true,
+      "display": {
+        "name": "Mapper",
+        "type": "mapper",
+        "mapperOutputScope" : "action"
+      }
+    }
+  ]
+}
