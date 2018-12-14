@@ -1,11 +1,12 @@
 ---
-title: Mapper
-weight: 4616
+title: data2TensorFlow
+weight: 4717
 ---
 
-# Mapper
-This activity allows you to map values to the working attribute set of a flow.
+# data2Tensor
+This activity converts data to a tensorflow tensor
 
+#below still the data from the copied source
 ## Installation
 ### Flogo Web
 This activity comes out of the box with the Flogo Web UI

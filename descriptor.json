@@ -1,20 +1,35 @@
 {
   "name": "flogo-data2tensor",
   "type": "flogo:activity",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "title": "Data2Tensor",
   "description": "convert data into a tensorflow tensor",
-  "homepage": "https://github.com/abramvandergeest/contrib/tree/master/activity/mapper",
+  "homepage": "https://github.com/abramvandergeest/data2TensorFlogo",
   "settings":[
     {
       "name": "mappings",
       "type": "object",
-      "required": true,
+      "required": false,
       "display": {
         "name": "Mapper",
         "type": "mapper",
         "mapperOutputScope" : "action"
       }
+    }
+  ],
+  "input":[
+    {
+      "name":"data",
+      "type":"any",
+      "required":false
+    }
+  ]
+  ,
+  "ouput":[
+    {
+      "name":"tensor",
+      "type":"any",
+      "required":false
     }
   ]
 }
