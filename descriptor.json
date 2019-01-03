@@ -5,18 +5,6 @@
   "title": "Data2Tensor",
   "description": "convert data into a tensorflow tensor",
   "homepage": "https://github.com/abramvandergeest/data2TensorFlogo",
-  "settings":[
-    {
-      "name": "mappings",
-      "type": "object",
-      "required": false,
-      "display": {
-        "name": "Mapper",
-        "type": "mapper",
-        "mapperOutputScope" : "action"
-      }
-    }
-  ],
   "input":[
     {
       "name":"data",

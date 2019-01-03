@@ -1,7 +1,7 @@
 package data2tensorflogo
 
 type Settings struct {
-	Mappings map[string]interface{} `md:"mappings,required"`
+	Filler map[string]interface{} `md:"filler"`
 }
 
 type Input struct {
@@ -25,7 +25,7 @@ type Output struct {
 
 func (r *Output) ToMap() map[string]interface{} {
 	return map[string]interface{}{
-		"data": r.Tensor,
+		"tensor": r.Tensor,
 	}
 }
 

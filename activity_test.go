@@ -1,7 +1,6 @@
 package data2tensorflogo
 
 import (
-	"encoding/json"
 	"fmt"
 	"image"
 	_ "image/jpeg" //I am decoding images here
@@ -14,6 +13,7 @@ import (
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/project-flogo/core/support/test"
 	"github.com/stretchr/testify/assert"
+	tf "github.com/tensorflow/tensorflow/tensorflow/go"
 )
 
 func TestRegister(t *testing.T) {
@@ -24,25 +24,11 @@ func TestRegister(t *testing.T) {
 	assert.NotNil(t, act)
 }
 
-func TestBram(t *testing.T) {
+func TestImage(t *testing.T) {
 
-	//set mappings
-	mappingsJson :=
-		`{
-           "Output1": "1",
-           "Output2": 2
-		}`
-
-	var mappings map[string]interface{}
-	err := json.Unmarshal([]byte(mappingsJson), &mappings)
-	if err != nil {
-		panic("Unable to parse mappings: " + err.Error())
-	}
-
-	settings := &Settings{Mappings: mappings}
+	settings := &Settings{}
 	iCtx := test.NewActivityInitContext(settings, nil)
-	fmt.Println("HELLO!!!")
-	// act, err := New(iCtx)
+
 	act, err := New(iCtx)
 
 	tc := test.NewActivityContext(act.Metadata())
@@ -51,7 +37,6 @@ func TestBram(t *testing.T) {
 
 	// Opening the image
 	imgfile, err := os.Open(filename)
-	// src, err := imaging.Open(filename)
 	if err != nil {
 		iCtx.Logger().Info("Unable to download item %q, %v", filename, err)
 	}
@@ -64,52 +49,48 @@ func TestBram(t *testing.T) {
 
 	tc.SetInput("data", src)
 
-	fmt.Println("HIPPY DIPPY DAY")
-	act.Eval(tc)
+	_, err = act.Eval(tc)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	output := tc.GetOutput("tensor")
+
+	ten, err2 := tf.NewTensor([]int32{2, 3, 4})
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+	assert.IsType(t, output, ten)
 	assert.Nil(t, err)
 }
 
-// func TestSimpleMapper(t *testing.T) {
+func TestData(t *testing.T) {
 
-// 	//set mappings
-// 	mappingsJson :=
-// 		`{
-//            "Output1": "1",
-//            "Output2": 2
-// 		}`
+	settings := &Settings{}
+	iCtx := test.NewActivityInitContext(settings, nil)
 
-// 	var mappings map[string]interface{}
-// 	err := json.Unmarshal([]byte(mappingsJson), &mappings)
-// 	if err != nil {
-// 		panic("Unable to parse mappings: " + err.Error())
-// 	}
+	act, err := New(iCtx)
 
-// 	settings := &Settings{Mappings: mappings}
-// 	iCtx := test.NewActivityInitContext(settings, nil)
+	tc := test.NewActivityContext(act.Metadata())
 
-// 	act, err := New(iCtx)
-// 	assert.Nil(t, err)
+	src := [][]float32{{1}, {2}, {3}, {4}}
 
-// 	ah := newActivityHost()
-// 	tc := test.NewActivityContextWithAction(act.Metadata(), ah)
+	tc.SetInput("data", src)
 
-// 	//eval
-// 	act.Eval(tc)
+	_, err = act.Eval(tc)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-// 	//assert.Nil(t, ah.ReplyErr)
-// 	o1, exists1 := ah.HostData.GetValue("Output1")
-// 	assert.True(t, exists1, "Output1 not set")
-// 	fmt.Println(o1)
-// 	if exists1 {
-// 		assert.Equal(t, "1", o1)
-// 	}
-// 	o2, exists2 := ah.HostData.GetValue("Output2")
-// 	assert.True(t, exists2, "Output2 not set")
-// 	fmt.Println(o1)
-// 	if exists2 {
-// 		assert.Equal(t, 2, o2)
-// 	}
-// }
+	output := tc.GetOutput("tensor")
+
+	ten, err2 := tf.NewTensor([]int32{2, 3, 4})
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+	assert.IsType(t, output, ten)
+	assert.Nil(t, err)
+}
 
 func newActivityHost() *test.TestActivityHost {
 	input := map[string]data.TypedValue{"Input1": data.NewTypedValue(data.TypeString, "")}
